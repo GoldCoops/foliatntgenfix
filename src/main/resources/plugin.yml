@@ -1,7 +1,17 @@
 name: foliatntgenfix
 version: '$version'
-
 folia-supported: true
 main: net.goldcoops.foliatntgenfix.Foliatntgenfix
 api-version: '1.21.11'
 load: POSTWORLD
+
+commands:
+  forge:
+    description: Forge a TNT Dispenser using crafting materials
+    usage: /forge
+    permission: foliatntgenfix.forge
+
+permissions:
+  foliatntgenfix.forge:
+    description: Allows use of the /forge command
+    default: op

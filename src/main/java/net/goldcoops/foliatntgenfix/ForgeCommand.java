@@ -1,0 +1,86 @@
+package net.goldcoops.foliatntgenfix;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.List;
+import java.util.Map;
+
+public class ForgeCommand implements CommandExecutor {
+
+    public static final NamespacedKey TNT_DISPENSER_KEY = new NamespacedKey("foliatntgenfix", "tnt_dispenser");
+
+    // Items consumed when forging the dispenser
+    private static final Map<Material, Integer> REQUIRED_ITEMS = Map.of(
+        Material.DISPENSER, 1,
+        Material.TNT, 4,
+        Material.REDSTONE, 8,
+        Material.SLIME_BALL, 2
+    );
+
+    private final JavaPlugin plugin;
+
+    public ForgeCommand(JavaPlugin plugin) {
+        this.plugin = plugin;
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage("Only players can use this command.");
+            return true;
+        }
+
+        Inventory inv = player.getInventory();
+
+        // Check player has all required items before consuming anything
+        for (Map.Entry<Material, Integer> entry : REQUIRED_ITEMS.entrySet()) {
+            if (!inv.containsAtLeast(new ItemStack(entry.getKey()), entry.getValue())) {
+                player.sendMessage(ChatColor.RED + "Missing: " + entry.getValue() + "x " + formatName(entry.getKey()));
+                player.sendMessage(ChatColor.GRAY + "Required: 1x Dispenser, 4x TNT, 8x Redstone, 2x Slime Ball");
+                return true;
+            }
+        }
+
+        // Consume the items
+        for (Map.Entry<Material, Integer> entry : REQUIRED_ITEMS.entrySet()) {
+            inv.removeItem(new ItemStack(entry.getKey(), entry.getValue()));
+        }
+
+        // Build the modified dispenser item with a PDC tag to identify it
+        ItemStack dispenser = new ItemStack(Material.DISPENSER);
+        ItemMeta meta = dispenser.getItemMeta();
+        meta.setDisplayName(ChatColor.GOLD + "TNT Dispenser");
+        meta.setLore(List.of(
+            ChatColor.GRAY + "Place and power with redstone",
+            ChatColor.GRAY + "to continuously fire lit TNT."
+        ));
+        meta.getPersistentDataContainer().set(TNT_DISPENSER_KEY, PersistentDataType.BYTE, (byte) 1);
+        dispenser.setItemMeta(meta);
+
+        player.getInventory().addItem(dispenser);
+        player.sendMessage(ChatColor.GREEN + "Forged a TNT Dispenser!");
+        return true;
+    }
+
+    private String formatName(Material mat) {
+        String name = mat.name().replace('_', ' ');
+        StringBuilder sb = new StringBuilder();
+        for (String word : name.split(" ")) {
+            sb.append(Character.toUpperCase(word.charAt(0)))
+              .append(word.substring(1).toLowerCase())
+              .append(" ");
+        }
+        return sb.toString().trim();
+    }
+}
