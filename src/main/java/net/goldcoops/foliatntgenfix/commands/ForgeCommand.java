@@ -58,6 +58,7 @@ public class ForgeCommand implements CommandExecutor {
             }
         }
         if (missingItems) {
+            player.sendMessage(sb.toString());
             player.sendMessage(ChatColor.GRAY + "Required: 1x Dispenser, 1x TNT, 1x Redstone, 1x Slime Block");
             return true;
         }
