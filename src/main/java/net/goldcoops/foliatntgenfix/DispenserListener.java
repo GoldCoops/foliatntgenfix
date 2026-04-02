@@ -82,7 +82,6 @@ public class DispenserListener implements Listener {
 
     private void fireTnt(Location dispenserLoc) {
         if (dispenserLoc.getWorld() == null) return;
-        dispenserLoc = toBlockLocation(dispenserLoc);
         Directional blockFace = (Directional) dispenserLoc.getBlock().getBlockData();
         BlockFace face = blockFace.getFacing();
         Location spawnLoc = dispenserLoc.clone();
