@@ -1,13 +1,17 @@
 package net.goldcoops.foliatntgenfix;
 
+import io.papermc.paper.event.block.BlockFailedDispenseEvent;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Directional;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.inventory.ItemStack;
@@ -25,7 +29,7 @@ public class DispenserListener implements Listener {
     // Locations where a custom TNT dispenser block has been placed
     private final Set<Location> placedDispenserLocations;
     // Active scheduled tasks keyed by location
-    private final Map<Location, ScheduledTask> activeTasks = new HashMap<>();
+    //private final Map<Location, ScheduledTask> activeTasks = new HashMap<>();
 
     public DispenserListener(JavaPlugin plugin, DispenserStorage storage) {
         this.plugin = plugin;
@@ -46,48 +50,55 @@ public class DispenserListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         Location loc = event.getBlock().getLocation();
         if (!placedDispenserLocations.remove(loc)) return;
-        cancelTask(loc);
         storage.save(placedDispenserLocations);
     }
 
     @EventHandler
-    public void onRedstoneChange(BlockRedstoneEvent event) {
-        Block block = event.getBlock();
-        if (block.getType() != Material.DISPENSER) return;
-
-        Location loc = block.getLocation();
-        if (!placedDispenserLocations.contains(loc)) return;
-
-        if (event.getNewCurrent() > 0 && !activeTasks.containsKey(loc)) {
-            ScheduledTask task = plugin.getServer().getRegionScheduler().runAtFixedRate(
-                plugin,
-                loc,
-                scheduledTask -> fireTnt(loc),
-                1L,
-                10L
-            );
-            activeTasks.put(loc, task);
-        } else if (event.getNewCurrent() == 0) {
-            cancelTask(loc);
-        }
-    }
-
-    public void saveAll() {
-        activeTasks.forEach((loc, task) -> task.cancel());
-        activeTasks.clear();
+    public void onExplode(BlockExplodeEvent event) {
+        Location loc = event.getBlock().getLocation();
+        if (!placedDispenserLocations.remove(loc)) return;
         storage.save(placedDispenserLocations);
     }
 
-    private void cancelTask(Location loc) {
-        ScheduledTask task = activeTasks.remove(loc);
-        if (task != null) {
-            task.cancel();
-        }
+
+    @EventHandler
+    public void onFailedDispenser(BlockFailedDispenseEvent event) {
+        Block block = event.getBlock();
+        if (block.getType() != Material.DISPENSER) return;
+        Location loc = block.getLocation();
+        if (!placedDispenserLocations.contains(loc)) return;
+        plugin.getServer().getRegionScheduler().execute(plugin, loc, () -> {fireTnt(loc);});
     }
+
+    public void saveAll() {
+        storage.save(placedDispenserLocations);
+    }
+
 
     private void fireTnt(Location dispenserLoc) {
         if (dispenserLoc.getWorld() == null) return;
-        Location spawnLoc = dispenserLoc.clone().add(0.5, 1.0, 0.5);
+        Directional blockFace = (Directional) dispenserLoc.getBlock().getBlockData();
+        BlockFace face = blockFace.getFacing();
+        Location spawnLoc = dispenserLoc.clone();
+        switch (face) {
+            case NORTH:
+                spawnLoc.add(0, 1, -2);
+                break;
+            case SOUTH:
+                spawnLoc.add(0, 1, 2);
+                break;
+            case WEST:
+                spawnLoc.add(-2, 1, 0);
+                break;
+            case EAST:
+                spawnLoc.add(2, 1, 0);
+                break;
+            case UP:
+                spawnLoc.add(0, 2, 0);
+                break;
+            case DOWN:
+                spawnLoc.add(0, -2, 0);
+        }
         dispenserLoc.getWorld().spawnEntity(spawnLoc, EntityType.TNT);
     }
 
