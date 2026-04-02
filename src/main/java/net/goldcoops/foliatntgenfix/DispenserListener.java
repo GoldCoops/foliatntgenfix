@@ -86,6 +86,7 @@ public class DispenserListener implements Listener {
         Directional blockFace = (Directional) dispenserLoc.getBlock().getBlockData();
         BlockFace face = blockFace.getFacing();
         Location spawnLoc = dispenserLoc.clone();
+        spawnLoc.add(0.5, 0, 0.5);
         switch (face) {
             case NORTH:
                 spawnLoc.add(0, 0, -1);
