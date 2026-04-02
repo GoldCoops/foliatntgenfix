@@ -39,10 +39,10 @@ public final class Foliatntgenfix extends JavaPlugin {
     public static ItemStack createTntDispenserItem() {
         ItemStack dispenser = new ItemStack(Material.DISPENSER);
         ItemMeta meta = dispenser.getItemMeta();
-        meta.setDisplayName(ChatColor.GOLD + "TNT Dispenser");
+        meta.setDisplayName(ChatColor.GOLD + "TNT Duplicator");
         meta.setLore(List.of(
-                ChatColor.GRAY + "Place and power with redstone",
-                ChatColor.GRAY + "to continuously fire lit TNT."
+                ChatColor.GRAY + "Place and power with redstone clock",
+                ChatColor.GRAY + "to continually spawn infinite TNT"
         ));
         meta.getPersistentDataContainer().set(ForgeCommand.TNT_DISPENSER_KEY, PersistentDataType.BYTE, (byte) 1);
         dispenser.setItemMeta(meta);
