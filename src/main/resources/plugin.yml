@@ -1,0 +1,7 @@
+name: foliatntgenfix
+version: '$version'
+
+folia-supported: true
+main: net.goldcoops.foliatntgenfix.Foliatntgenfix
+api-version: '1.21.11'
+load: POSTWORLD
