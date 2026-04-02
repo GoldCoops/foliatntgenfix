@@ -5,13 +5,24 @@ main: net.goldcoops.foliatntgenfix.Foliatntgenfix
 api-version: '1.21.11'
 load: POSTWORLD
 
+author: GoldCoops
+
 commands:
   forge:
     description: Forge a TNT Dispenser using crafting materials
     usage: /forge
     permission: foliatntgenfix.forge
+  giveduplicator:
+    description: Gives the specified player a tnt duplicator *Specifying amount is optional*
+    usage: /giveduplicator <player> <amount>
+    permission: foliatntgenfix.giveduplicator
+    aliases: givedupe
+
 
 permissions:
   foliatntgenfix.forge:
     description: Allows use of the /forge command
+    default: op
+  foliatntgenfix.giveduplicator:
+    description: Allows use of the /giveduplicator (player) command
     default: op

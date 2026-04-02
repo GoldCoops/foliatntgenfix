@@ -1,4 +1,4 @@
-package net.goldcoops.foliatntgenfix;
+package net.goldcoops.foliatntgenfix.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,11 +16,20 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.List;
 import java.util.Map;
 
+import static net.goldcoops.foliatntgenfix.Foliatntgenfix.createTntDispenserItem;
+
 public class ForgeCommand implements CommandExecutor {
+
+
+    private final JavaPlugin plugin;
+
+    public ForgeCommand(JavaPlugin plugin) {
+        this.plugin = plugin;
+    }
+
 
     public static final NamespacedKey TNT_DISPENSER_KEY = new NamespacedKey("foliatntgenfix", "tnt_dispenser");
 
-    // Items consumed when forging the dispenser
     private static final Map<Material, Integer> REQUIRED_ITEMS = Map.of(
         Material.DISPENSER, 1,
         Material.TNT, 4,
@@ -28,11 +37,6 @@ public class ForgeCommand implements CommandExecutor {
         Material.SLIME_BALL, 2
     );
 
-    private final JavaPlugin plugin;
-
-    public ForgeCommand(JavaPlugin plugin) {
-        this.plugin = plugin;
-    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -43,7 +47,7 @@ public class ForgeCommand implements CommandExecutor {
 
         Inventory inv = player.getInventory();
 
-        // Check player has all required items before consuming anything
+
         for (Map.Entry<Material, Integer> entry : REQUIRED_ITEMS.entrySet()) {
             if (!inv.containsAtLeast(new ItemStack(entry.getKey()), entry.getValue())) {
                 player.sendMessage(ChatColor.RED + "Missing: " + entry.getValue() + "x " + formatName(entry.getKey()));
@@ -52,22 +56,13 @@ public class ForgeCommand implements CommandExecutor {
             }
         }
 
-        // Consume the items
+
         for (Map.Entry<Material, Integer> entry : REQUIRED_ITEMS.entrySet()) {
             inv.removeItem(new ItemStack(entry.getKey(), entry.getValue()));
         }
 
-        // Build the modified dispenser item with a PDC tag to identify it
-        ItemStack dispenser = new ItemStack(Material.DISPENSER);
-        ItemMeta meta = dispenser.getItemMeta();
-        meta.setDisplayName(ChatColor.GOLD + "TNT Dispenser");
-        meta.setLore(List.of(
-            ChatColor.GRAY + "Place and power with redstone",
-            ChatColor.GRAY + "to continuously fire lit TNT."
-        ));
-        meta.getPersistentDataContainer().set(TNT_DISPENSER_KEY, PersistentDataType.BYTE, (byte) 1);
-        dispenser.setItemMeta(meta);
 
+        ItemStack dispenser = createTntDispenserItem();
         player.getInventory().addItem(dispenser);
         player.sendMessage(ChatColor.GREEN + "Forged a TNT Dispenser!");
         return true;

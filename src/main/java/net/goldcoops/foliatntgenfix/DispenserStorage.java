@@ -51,7 +51,6 @@ public class DispenserStorage {
         }
     }
 
-    // Format: "world,x,y,z"
     private String serialize(Location loc) {
         return loc.getWorld().getName() + "," + loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ();
     }
