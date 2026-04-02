@@ -32,9 +32,9 @@ public class ForgeCommand implements CommandExecutor {
 
     private static final Map<Material, Integer> REQUIRED_ITEMS = Map.of(
         Material.DISPENSER, 1,
-        Material.TNT, 4,
-        Material.REDSTONE, 8,
-        Material.SLIME_BALL, 2
+        Material.TNT, 1,
+        Material.REDSTONE, 1,
+        Material.SLIME_BLOCK, 1
     );
 
 
@@ -47,13 +47,19 @@ public class ForgeCommand implements CommandExecutor {
 
         Inventory inv = player.getInventory();
 
+        StringBuilder sb = new StringBuilder();
 
+        boolean missingItems = false;
         for (Map.Entry<Material, Integer> entry : REQUIRED_ITEMS.entrySet()) {
             if (!inv.containsAtLeast(new ItemStack(entry.getKey()), entry.getValue())) {
-                player.sendMessage(ChatColor.RED + "Missing: " + entry.getValue() + "x " + formatName(entry.getKey()));
-                player.sendMessage(ChatColor.GRAY + "Required: 1x Dispenser, 4x TNT, 8x Redstone, 2x Slime Ball");
-                return true;
+                sb.append(ChatColor.RED + "Missing: " + entry.getValue() + "x " + formatName(entry.getKey()) + "\n");
+                //player.sendMessage(ChatColor.RED + "Missing: " + entry.getValue() + "x " + formatName(entry.getKey()));
+                missingItems = true;
             }
+        }
+        if (missingItems) {
+            player.sendMessage(ChatColor.GRAY + "Required: 1x Dispenser, 1x TNT, 1x Redstone, 1x Slime Block");
+            return true;
         }
 
 

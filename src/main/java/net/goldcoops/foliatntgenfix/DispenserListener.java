@@ -23,6 +23,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.List;
 import java.util.Set;
 
+import static net.goldcoops.foliatntgenfix.Foliatntgenfix.toBlockLocation;
+
 public class DispenserListener implements Listener {
 
     private final JavaPlugin plugin;
@@ -80,27 +82,28 @@ public class DispenserListener implements Listener {
 
     private void fireTnt(Location dispenserLoc) {
         if (dispenserLoc.getWorld() == null) return;
+        dispenserLoc = toBlockLocation(dispenserLoc);
         Directional blockFace = (Directional) dispenserLoc.getBlock().getBlockData();
         BlockFace face = blockFace.getFacing();
         Location spawnLoc = dispenserLoc.clone();
         switch (face) {
             case NORTH:
-                spawnLoc.add(0, 0, -1.5);
+                spawnLoc.add(0, 0, -1);
                 break;
             case SOUTH:
-                spawnLoc.add(0, 0, 1.5);
+                spawnLoc.add(0, 0, 1);
                 break;
             case WEST:
-                spawnLoc.add(-1.5, 0, 0);
+                spawnLoc.add(-1, 0, 0);
                 break;
             case EAST:
-                spawnLoc.add(1.5, 0, 0);
+                spawnLoc.add(1, 0, 0);
                 break;
             case UP:
-                spawnLoc.add(0, 1.5, 0);
+                spawnLoc.add(0, 1, 0);
                 break;
             case DOWN:
-                spawnLoc.add(0, -1.5, 0);
+                spawnLoc.add(0, -1, 0);
         }
         dispenserLoc.getWorld().spawnEntity(spawnLoc, EntityType.TNT);
     }
@@ -114,7 +117,5 @@ public class DispenserListener implements Listener {
 
 
 
-    private Location toBlockLocation(Location loc) {
-        return new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
-    }
+
 }

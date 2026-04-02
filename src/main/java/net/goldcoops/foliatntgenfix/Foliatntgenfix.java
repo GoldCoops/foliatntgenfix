@@ -3,6 +3,7 @@ package net.goldcoops.foliatntgenfix;
 import net.goldcoops.foliatntgenfix.commands.ForgeCommand;
 import net.goldcoops.foliatntgenfix.commands.GiveDuplicatorCommand;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -46,5 +47,10 @@ public final class Foliatntgenfix extends JavaPlugin {
         meta.getPersistentDataContainer().set(ForgeCommand.TNT_DISPENSER_KEY, PersistentDataType.BYTE, (byte) 1);
         dispenser.setItemMeta(meta);
         return dispenser;
+    }
+
+
+    public static Location toBlockLocation(Location loc) {
+        return new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
     }
 }
