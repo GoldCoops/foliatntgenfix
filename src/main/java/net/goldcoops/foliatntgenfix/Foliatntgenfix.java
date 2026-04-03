@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockDataMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,8 +19,7 @@ public final class Foliatntgenfix extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        DispenserStorage storage = new DispenserStorage(this);
-        dispenserListener = new DispenserListener(this, storage);
+        dispenserListener = new DispenserListener(this);
         getCommand("forge").setExecutor(new ForgeCommand(this));
         getCommand("giveduplicator").setExecutor(new GiveDuplicatorCommand(this));
         getServer().getPluginManager().registerEvents(dispenserListener, this);
@@ -28,15 +28,12 @@ public final class Foliatntgenfix extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        if (dispenserListener != null) {
-            dispenserListener.saveAll();
-        }
         getLogger().info("FoliaTntGenFix disabled.");
     }
 
 
 
-    public static ItemStack createTntDispenserItem() {
+    public static ItemStack createTntDispenserItem(int level) {
         ItemStack dispenser = new ItemStack(Material.DISPENSER);
         ItemMeta meta = dispenser.getItemMeta();
         meta.setDisplayName(ChatColor.GOLD + "TNT Duplicator");

@@ -69,7 +69,7 @@ public class ForgeCommand implements CommandExecutor {
         }
 
 
-        ItemStack dispenser = createTntDispenserItem();
+        ItemStack dispenser = createTntDispenserItem(1);
         player.getInventory().addItem(dispenser);
         player.sendMessage(ChatColor.GREEN + "Forged a TNT Dispenser!");
         return true;
