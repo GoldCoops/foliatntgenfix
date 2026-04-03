@@ -1,8 +1,5 @@
 package net.goldcoops.foliatntgenfix.commands;
 
-import net.goldcoops.foliatntgenfix.DispenserListener;
-import net.goldcoops.foliatntgenfix.Foliatntgenfix;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,7 +9,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import static net.goldcoops.foliatntgenfix.Foliatntgenfix.createTntDispenserItem;
-import static org.bukkit.plugin.java.JavaPlugin.getPlugin;
 
 public class GiveDuplicatorCommand implements CommandExecutor {
 

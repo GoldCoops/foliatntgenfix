@@ -1,7 +1,6 @@
 package net.goldcoops.foliatntgenfix;
 
 import io.papermc.paper.event.block.BlockFailedDispenseEvent;
-import net.goldcoops.foliatntgenfix.commands.ForgeCommand;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -38,7 +37,7 @@ public class DispenserListener implements Listener {
         ItemStack item = event.getItemInHand();
         if (!isTntDispenserItem(item) ) return;
         if (!(event.getBlock().getState() instanceof Dispenser dispenser)) return;
-        dispenser.getPersistentDataContainer().set(ForgeCommand.TNT_DISPENSER_KEY, PersistentDataType.BYTE, (byte) 1);
+        dispenser.getPersistentDataContainer().set(Foliatntgenfix.TNT_DISPENSER_KEY, PersistentDataType.BYTE, (byte) 1);
         dispenser.update();
     }
 
@@ -101,14 +100,14 @@ public class DispenserListener implements Listener {
         if (item == null || item.getType() != Material.DISPENSER) return false;
         if (!item.hasItemMeta()) return false;
         return item.getItemMeta().getPersistentDataContainer()
-            .has(ForgeCommand.TNT_DISPENSER_KEY, PersistentDataType.BYTE);
+            .has(Foliatntgenfix.TNT_DISPENSER_KEY, PersistentDataType.BYTE);
     }
 
     private boolean isTntDispenserBlock(Block block) {
         if (block.getType() != Material.DISPENSER) return false;
         if (!(block.getState() instanceof Dispenser dispenser)) return false;
         if (dispenser.getPersistentDataContainer().isEmpty()) return false;
-        return dispenser.getPersistentDataContainer().has(ForgeCommand.TNT_DISPENSER_KEY, PersistentDataType.BYTE);
+        return dispenser.getPersistentDataContainer().has(Foliatntgenfix.TNT_DISPENSER_KEY, PersistentDataType.BYTE);
     }
 
 

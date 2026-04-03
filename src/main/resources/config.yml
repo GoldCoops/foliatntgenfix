@@ -1,0 +1,6 @@
+first-tier:
+  STONE: 5
+  DIAMOND_BLOCK: 5
+second-tier:
+  STONE: 10
+  DIAMOND_BLOCK: 10

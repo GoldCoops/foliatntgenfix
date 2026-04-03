@@ -2,20 +2,21 @@ package net.goldcoops.foliatntgenfix.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.List;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+
+
 import java.util.Map;
 
+import static net.goldcoops.foliatntgenfix.Foliatntgenfix.REQUIRED_ITEMS1;
+import static net.goldcoops.foliatntgenfix.Foliatntgenfix.REQUIRED_ITEMS2;
 import static net.goldcoops.foliatntgenfix.Foliatntgenfix.createTntDispenserItem;
 
 public class ForgeCommand implements CommandExecutor {
@@ -28,18 +29,13 @@ public class ForgeCommand implements CommandExecutor {
     }
 
 
-    public static final NamespacedKey TNT_DISPENSER_KEY = new NamespacedKey("foliatntgenfix", "tnt_dispenser");
 
-    private static final Map<Material, Integer> REQUIRED_ITEMS = Map.of(
-        Material.DISPENSER, 1,
-        Material.TNT, 1,
-        Material.REDSTONE, 1,
-        Material.SLIME_BLOCK, 1
-    );
+
+
 
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender,@NotNull Command command,@NotNull String label, String[] args) {
         if (!(sender instanceof Player player)) {
             sender.sendMessage("Only players can use this command.");
             return true;
@@ -50,7 +46,7 @@ public class ForgeCommand implements CommandExecutor {
         StringBuilder sb = new StringBuilder();
 
         boolean missingItems = false;
-        for (Map.Entry<Material, Integer> entry : REQUIRED_ITEMS.entrySet()) {
+        for (Map.Entry<Material, Integer> entry : REQUIRED_ITEMS1.entrySet()) {
             if (!inv.containsAtLeast(new ItemStack(entry.getKey()), entry.getValue())) {
                 sb.append(ChatColor.RED + "Missing: " + entry.getValue() + "x " + formatName(entry.getKey()) + "\n");
                 //player.sendMessage(ChatColor.RED + "Missing: " + entry.getValue() + "x " + formatName(entry.getKey()));
@@ -64,7 +60,7 @@ public class ForgeCommand implements CommandExecutor {
         }
 
 
-        for (Map.Entry<Material, Integer> entry : REQUIRED_ITEMS.entrySet()) {
+        for (Map.Entry<Material, Integer> entry : REQUIRED_ITEMS1.entrySet()) {
             inv.removeItem(new ItemStack(entry.getKey(), entry.getValue()));
         }
 
