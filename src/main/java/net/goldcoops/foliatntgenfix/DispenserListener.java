@@ -36,7 +36,7 @@ public class DispenserListener implements Listener {
         ItemStack item = event.getItemInHand();
         if (!isTntDispenserItem(item) ) return;
         if (!(event.getBlock().getState() instanceof Dispenser dispenser)) return;
-        dispenser.getPersistentDataContainer().set(Foliatntgenfix.TNT_DISPENSER_KEY, PersistentDataType.BYTE, (byte) 1);
+        dispenser.getPersistentDataContainer().set(Foliatntgenfix.TNT_DISPENSER_KEY, PersistentDataType.BYTE, getTntDispenserItemLevel(item));
         dispenser.update();
     }
 
@@ -46,7 +46,7 @@ public class DispenserListener implements Listener {
         if (!isTntDispenserBlock(event.getBlock())) return;
 
         event.setDropItems(false);
-        //plugin.getLogger().info(String.valueOf(Foliatntgenfix.getTntDispenserBlockLevel(event.getBlock())));
+        plugin.getLogger().info(String.valueOf(Foliatntgenfix.getTntDispenserBlockLevel(event.getBlock())));
         ItemStack tntDispenser = Foliatntgenfix.createTntDispenserItem(Foliatntgenfix.getTntDispenserBlockLevel(event.getBlock()));
         loc.getWorld().dropItemNaturally(loc, tntDispenser);
     }

@@ -16,6 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.List;
 import java.util.Map;
 
+
 public final class Foliatntgenfix extends JavaPlugin {
 
     private DispenserListener dispenserListener;
@@ -68,6 +69,15 @@ public final class Foliatntgenfix extends JavaPlugin {
         if (dispenser.getPersistentDataContainer().isEmpty()) return 0;
         if (isTntDispenserBlock(block)) {
             return dispenser.getPersistentDataContainer().get(TNT_DISPENSER_KEY, PersistentDataType.BYTE);
+        }
+        return 0;
+    }
+
+    public static byte getTntDispenserItemLevel(ItemStack item) {
+        if (item.getType() != Material.DISPENSER) return 0;
+        if (item.getItemMeta().getPersistentDataContainer().isEmpty()) return 0;
+        if (isTntDispenserItem(item)) {
+            return item.getItemMeta().getPersistentDataContainer().get(TNT_DISPENSER_KEY, PersistentDataType.BYTE);
         }
         return 0;
     }
