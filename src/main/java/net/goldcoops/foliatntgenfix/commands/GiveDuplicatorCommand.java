@@ -25,7 +25,7 @@ public class GiveDuplicatorCommand implements CommandExecutor {
 
         if (args.length > 0) {
 
-            ItemStack tntduper = createTntDispenserItem(1);
+            ItemStack tntduper = createTntDispenserItem((byte) 1);
 
             String targetName = args[0];
 

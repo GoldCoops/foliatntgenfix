@@ -4,3 +4,6 @@ first-tier:
 second-tier:
   STONE: 10
   DIAMOND_BLOCK: 10
+
+
+second-tier-delay: 2000

@@ -19,8 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
-
-import static net.goldcoops.foliatntgenfix.Foliatntgenfix.toBlockLocation;
+import static net.goldcoops.foliatntgenfix.Foliatntgenfix.*;
 
 public class DispenserListener implements Listener {
 
@@ -47,20 +46,21 @@ public class DispenserListener implements Listener {
         if (!isTntDispenserBlock(event.getBlock())) return;
 
         event.setDropItems(false);
-        ItemStack tntDispenser = Foliatntgenfix.createTntDispenserItem(1);
+        //plugin.getLogger().info(String.valueOf(Foliatntgenfix.getTntDispenserBlockLevel(event.getBlock())));
+        ItemStack tntDispenser = Foliatntgenfix.createTntDispenserItem(Foliatntgenfix.getTntDispenserBlockLevel(event.getBlock()));
         loc.getWorld().dropItemNaturally(loc, tntDispenser);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityExplode(EntityExplodeEvent event) {
-        event.blockList().removeIf(this::isTntDispenserBlock);
+        event.blockList().removeIf(Foliatntgenfix::isTntDispenserBlock);
     }
 
 
     @EventHandler
     public void onFailedDispenser(BlockFailedDispenseEvent event) {
         isTntDispenserBlock(event.getBlock());
-        Block block = event.getBlock();
+         Block block = event.getBlock();
         if (block.getType() != Material.DISPENSER) return;
         Location loc = toBlockLocation(block.getLocation());
         if (!isTntDispenserBlock(block)) return;
@@ -96,19 +96,7 @@ public class DispenserListener implements Listener {
         dispenserLoc.getWorld().spawnEntity(spawnLoc, EntityType.TNT);
     }
 
-    private boolean isTntDispenserItem(ItemStack item) {
-        if (item == null || item.getType() != Material.DISPENSER) return false;
-        if (!item.hasItemMeta()) return false;
-        return item.getItemMeta().getPersistentDataContainer()
-            .has(Foliatntgenfix.TNT_DISPENSER_KEY, PersistentDataType.BYTE);
-    }
 
-    private boolean isTntDispenserBlock(Block block) {
-        if (block.getType() != Material.DISPENSER) return false;
-        if (!(block.getState() instanceof Dispenser dispenser)) return false;
-        if (dispenser.getPersistentDataContainer().isEmpty()) return false;
-        return dispenser.getPersistentDataContainer().has(Foliatntgenfix.TNT_DISPENSER_KEY, PersistentDataType.BYTE);
-    }
 
 
 
