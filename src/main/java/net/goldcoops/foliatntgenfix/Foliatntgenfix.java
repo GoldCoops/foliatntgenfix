@@ -2,6 +2,7 @@ package net.goldcoops.foliatntgenfix;
 
 import net.goldcoops.foliatntgenfix.commands.ForgeCommand;
 import net.goldcoops.foliatntgenfix.commands.GiveDuplicatorCommand;
+import net.goldcoops.foliatntgenfix.commands.ReloadCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,6 +14,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.time.*;
+
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +23,7 @@ import java.util.Map;
 public final class Foliatntgenfix extends JavaPlugin {
 
     private DispenserListener dispenserListener;
-    public ConfigHandler configHandler;
+    public static ConfigHandler configHandler;
     public static final NamespacedKey TNT_DISPENSER_KEY = new NamespacedKey("foliatntgenfix", "tnt_dispenser");
 
 
@@ -36,6 +39,7 @@ public final class Foliatntgenfix extends JavaPlugin {
         saveDefaultConfig();
         REQUIRED_ITEMS1 = configHandler.getMaterialMap("first-tier");
         REQUIRED_ITEMS2 = configHandler.getMaterialMap("second-tier");
+        getCommand("reloadrecipes").setExecutor(new ReloadCommand(this));
         getCommand("forge").setExecutor(new ForgeCommand(this));
         getCommand("giveduplicator").setExecutor(new GiveDuplicatorCommand(this));
         getServer().getPluginManager().registerEvents(dispenserListener, this);
@@ -56,7 +60,8 @@ public final class Foliatntgenfix extends JavaPlugin {
         meta.setDisplayName(ChatColor.GOLD + "TNT Duplicator");
         meta.setLore(List.of(
                 ChatColor.GRAY + "Place and power with redstone clock",
-                ChatColor.GRAY + "to continually spawn infinite TNT"
+                ChatColor.GRAY + "to continually spawn infinite TNT",
+                ChatColor.GRAY + "Level: " + level
         ));
         meta.getPersistentDataContainer().set(TNT_DISPENSER_KEY, PersistentDataType.BYTE, level);
         dispenser.setItemMeta(meta);
@@ -96,7 +101,6 @@ public final class Foliatntgenfix extends JavaPlugin {
         return item.getItemMeta().getPersistentDataContainer()
                 .has(TNT_DISPENSER_KEY, PersistentDataType.BYTE);
     }
-
 
 
     public static Location toBlockLocation(Location loc) {

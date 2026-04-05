@@ -17,6 +17,10 @@ commands:
     usage: /giveduplicator <player> <amount>
     permission: foliatntgenfix.giveduplicator
     aliases: givedupe
+  reloadrecipes:
+    description: Reloads the recipes for the plugin
+    usage: /reloadrecipes
+    permission: foliatntgenfix.reload
 
 
 permissions:
@@ -25,4 +29,7 @@ permissions:
     default: op
   foliatntgenfix.giveduplicator:
     description: Allows use of the /giveduplicator (player) command
+    default: op
+  foliatntgenfix.reload:
+    description: Allows use of the /reloadrecipes command
     default: op

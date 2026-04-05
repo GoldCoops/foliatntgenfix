@@ -42,7 +42,7 @@ public class ForgeCommand implements CommandExecutor {
         }
         int level;
         try {
-            level = (args.length == 0) ? 2 : Integer.parseInt(args[0]);
+            level = (args.length == 0) ? 1 : Integer.parseInt(args[0]);
             if (level < 1 || level > 2) throw new NumberFormatException();
         }catch (NumberFormatException e) {
             player.sendMessage("Invalid level. Level must be 1 or 2.");
