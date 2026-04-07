@@ -1,6 +1,6 @@
 package net.goldcoops.foliatntgenfix.commands;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -64,7 +64,7 @@ public class ForgeCommand implements CommandExecutor {
 
         ItemStack dispenser = createTntDispenserItem((byte) level);
         player.getInventory().addItem(dispenser);
-        player.sendMessage(NamedTextColor.GREEN + "Forged a TNT Dispenser!");
+        player.sendMessage(Component.text("Forged a TNT Dispenser!", NamedTextColor.GREEN));
         return true;
 
 
@@ -76,23 +76,23 @@ public class ForgeCommand implements CommandExecutor {
 
         StringBuilder missing_sb = new StringBuilder();
         StringBuilder required_sb = new StringBuilder();
-        required_sb.append(NamedTextColor.GRAY).append("Required: ");
+        required_sb.append("Required: ");
         boolean missingItems = false;
         int passses = 0;
 
         for (Map.Entry<Material, Integer> entry : requiredItems.entrySet()) {
             if (passses > 0) required_sb.append(", ");
-            required_sb.append(NamedTextColor.GRAY).append(entry.getValue().toString()).append("x ").append(formatName(entry.getKey()));
+            required_sb.append(entry.getValue().toString()).append("x ").append(formatName(entry.getKey()));
             if (!inv.containsAtLeast(new ItemStack(entry.getKey()), entry.getValue())) {
-                missing_sb.append(NamedTextColor.RED).append("Missing: ").append(entry.getValue()).append("x ").append(formatName(entry.getKey())).append("\n");
+                missing_sb.append("Missing: ").append(entry.getValue()).append("x ").append(formatName(entry.getKey())).append("\n");
                 missingItems = true;
             }
             passses++;
         }
 
         if (missingItems) {
-            player.sendMessage(missing_sb.toString());
-            player.sendMessage(required_sb.toString().trim());
+            player.sendMessage(Component.text(missing_sb.toString().trim(), NamedTextColor.RED));
+            player.sendMessage(Component.text(required_sb.toString().trim(), NamedTextColor.GRAY));
             return true;
         }
         return false;

@@ -1,7 +1,6 @@
 package net.goldcoops.foliatntgenfix.commands;
 
 import net.goldcoops.foliatntgenfix.ConfigHandler;
-import net.goldcoops.foliatntgenfix.Foliatntgenfix;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
