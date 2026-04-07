@@ -35,13 +35,13 @@ public class ForgeCommand implements CommandExecutor {
 
 
 
-
     @Override
     public boolean onCommand(@NotNull CommandSender sender,@NotNull Command command,@NotNull String label, String[] args) {
         if (!(sender instanceof Player player)) {
             sender.sendMessage("Only players can use this command.");
             return true;
         }
+        if (!player.hasPermission("foliatntgenfix.forge")) return false;
         int level;
         try {
             level = (args.length == 0) ? 1 : Integer.parseInt(args[0]);
@@ -78,7 +78,7 @@ public class ForgeCommand implements CommandExecutor {
         StringBuilder required_sb = new StringBuilder();
         required_sb.append("Required: ");
         boolean missingItems = false;
-        int passses = 0;
+        int passses = 0; // I know this is a bad way to do it, but im tired and it works
 
         for (Map.Entry<Material, Integer> entry : requiredItems.entrySet()) {
             if (passses > 0) required_sb.append(", ");

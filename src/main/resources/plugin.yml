@@ -14,7 +14,7 @@ commands:
     permission: foliatntgenfix.forge
   giveduplicator:
     description: Gives the specified player a tnt duplicator *Specifying amount is optional*
-    usage: /giveduplicator <player> <amount>
+    usage: /giveduplicator <player> <amount> <level>
     permission: foliatntgenfix.giveduplicator
     aliases: givedupe
   reloadrecipes:

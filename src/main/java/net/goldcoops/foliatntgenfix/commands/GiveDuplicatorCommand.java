@@ -21,7 +21,7 @@ public class GiveDuplicatorCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
 
-
+        if (!commandSender.hasPermission("foliatntgenfix.giveduplicator")) return false;
 
         if (args.length > 0) {
 
