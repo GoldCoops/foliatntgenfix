@@ -3,7 +3,8 @@ package net.goldcoops.foliatntgenfix;
 import net.goldcoops.foliatntgenfix.commands.ForgeCommand;
 import net.goldcoops.foliatntgenfix.commands.GiveDuplicatorCommand;
 import net.goldcoops.foliatntgenfix.commands.ReloadCommand;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -14,6 +15,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import net.kyori.adventure.text.format.NamedTextColor;
+
 import java.time.*;
 
 import java.util.List;
@@ -23,7 +26,7 @@ import java.util.Map;
 public final class Foliatntgenfix extends JavaPlugin {
 
     private DispenserListener dispenserListener;
-    public static ConfigHandler configHandler;
+    public ConfigHandler configHandler;
     public static final NamespacedKey TNT_DISPENSER_KEY = new NamespacedKey("foliatntgenfix", "tnt_dispenser");
 
 
@@ -39,7 +42,7 @@ public final class Foliatntgenfix extends JavaPlugin {
         saveDefaultConfig();
         REQUIRED_ITEMS1 = configHandler.getMaterialMap("first-tier");
         REQUIRED_ITEMS2 = configHandler.getMaterialMap("second-tier");
-        getCommand("reloadrecipes").setExecutor(new ReloadCommand(this));
+        getCommand("reloadrecipes").setExecutor(new ReloadCommand(this, configHandler));
         getCommand("forge").setExecutor(new ForgeCommand(this));
         getCommand("giveduplicator").setExecutor(new GiveDuplicatorCommand(this));
         getServer().getPluginManager().registerEvents(dispenserListener, this);
@@ -56,12 +59,13 @@ public final class Foliatntgenfix extends JavaPlugin {
 
     public static ItemStack createTntDispenserItem(byte level) {
         ItemStack dispenser = new ItemStack(Material.DISPENSER);
+        TextComponent name =  Component.text("TNT Duplicator", NamedTextColor.GOLD);
         ItemMeta meta = dispenser.getItemMeta();
-        meta.setDisplayName(ChatColor.GOLD + "TNT Duplicator");
-        meta.setLore(List.of(
-                ChatColor.GRAY + "Place and power with redstone clock",
-                ChatColor.GRAY + "to continually spawn infinite TNT",
-                ChatColor.GRAY + "Level: " + level
+        meta.displayName(name);
+        meta.lore(List.of(
+                Component.text("Place and power with redstone clock", NamedTextColor.GRAY),
+                Component.text( "to continually spawn infinite TNT", NamedTextColor.GRAY),
+                Component.text( "Level: " + level, NamedTextColor.GRAY)
         ));
         meta.getPersistentDataContainer().set(TNT_DISPENSER_KEY, PersistentDataType.BYTE, level);
         dispenser.setItemMeta(meta);

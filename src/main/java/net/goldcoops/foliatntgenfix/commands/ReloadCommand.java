@@ -1,5 +1,6 @@
 package net.goldcoops.foliatntgenfix.commands;
 
+import net.goldcoops.foliatntgenfix.ConfigHandler;
 import net.goldcoops.foliatntgenfix.Foliatntgenfix;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,9 +14,11 @@ import static net.goldcoops.foliatntgenfix.Foliatntgenfix.*;
 public class ReloadCommand implements CommandExecutor {
 
     private final JavaPlugin plugin;
+    private final ConfigHandler configHandler;
 
-    public ReloadCommand(JavaPlugin plugin) {
+    public ReloadCommand(JavaPlugin plugin, ConfigHandler configHandler) {
         this.plugin = plugin;
+        this.configHandler = configHandler;
     }
 
     @Override

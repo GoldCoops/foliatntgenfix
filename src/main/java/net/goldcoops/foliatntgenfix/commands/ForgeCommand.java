@@ -12,6 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import net.kyori.adventure.text.format.NamedTextColor;
+
 
 import java.util.Map;
 
@@ -62,7 +64,7 @@ public class ForgeCommand implements CommandExecutor {
 
         ItemStack dispenser = createTntDispenserItem((byte) level);
         player.getInventory().addItem(dispenser);
-        player.sendMessage(ChatColor.GREEN + "Forged a TNT Dispenser!");
+        player.sendMessage(NamedTextColor.GREEN + "Forged a TNT Dispenser!");
         return true;
 
 
@@ -74,15 +76,15 @@ public class ForgeCommand implements CommandExecutor {
 
         StringBuilder missing_sb = new StringBuilder();
         StringBuilder required_sb = new StringBuilder();
-        required_sb.append(ChatColor.GRAY + "Required: ");
+        required_sb.append(NamedTextColor.GRAY).append("Required: ");
         boolean missingItems = false;
         int passses = 0;
 
         for (Map.Entry<Material, Integer> entry : requiredItems.entrySet()) {
             if (passses > 0) required_sb.append(", ");
-            required_sb.append(ChatColor.GRAY + entry.getValue().toString() + "x " + formatName(entry.getKey()));
+            required_sb.append(NamedTextColor.GRAY).append(entry.getValue().toString()).append("x ").append(formatName(entry.getKey()));
             if (!inv.containsAtLeast(new ItemStack(entry.getKey()), entry.getValue())) {
-                missing_sb.append(ChatColor.RED + "Missing: " + entry.getValue() + "x " + formatName(entry.getKey()) + "\n");
+                missing_sb.append(NamedTextColor.RED).append("Missing: ").append(entry.getValue()).append("x ").append(formatName(entry.getKey())).append("\n");
                 missingItems = true;
             }
             passses++;
