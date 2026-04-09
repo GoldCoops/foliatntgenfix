@@ -25,45 +25,48 @@ public class DispenserListener implements Listener {
 
     private final JavaPlugin plugin;
 
+    private final Foliatntgenfix main;
+
 
 
     public DispenserListener(JavaPlugin plugin) {
         this.plugin = plugin;
+        this.main = Foliatntgenfix.getInstance();
     }
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         ItemStack item = event.getItemInHand();
-        if (!isTntDispenserItem(item) ) return;
+        if (!main.isTntDispenserItem(item) ) return;
         if (!(event.getBlock().getState() instanceof Dispenser dispenser)) return;
-        dispenser.getPersistentDataContainer().set(Foliatntgenfix.TNT_DISPENSER_KEY, PersistentDataType.BYTE, getTntDispenserItemLevel(item));
+        dispenser.getPersistentDataContainer().set(Foliatntgenfix.TNT_DISPENSER_KEY, PersistentDataType.BYTE, main.getTntDispenserItemLevel(item));
         dispenser.update();
     }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        Location loc = toBlockLocation(event.getBlock().getLocation());
-        if (!isTntDispenserBlock(event.getBlock())) return;
+        Location loc = main.toBlockLocation(event.getBlock().getLocation());
+        if (!main.isTntDispenserBlock(event.getBlock())) return;
 
         event.setDropItems(false);
-        plugin.getLogger().info(String.valueOf(Foliatntgenfix.getTntDispenserBlockLevel(event.getBlock())));
-        ItemStack tntDispenser = Foliatntgenfix.createTntDispenserItem(Foliatntgenfix.getTntDispenserBlockLevel(event.getBlock()));
+        plugin.getLogger().info(String.valueOf(main.getTntDispenserBlockLevel(event.getBlock())));
+        ItemStack tntDispenser = main.createTntDispenserItem(main.getTntDispenserBlockLevel(event.getBlock()));
         loc.getWorld().dropItemNaturally(loc, tntDispenser);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityExplode(EntityExplodeEvent event) {
-        event.blockList().removeIf(Foliatntgenfix::isTntDispenserBlock);
+        event.blockList().removeIf(main::isTntDispenserBlock);
     }
 
 
     @EventHandler
     public void onFailedDispenser(BlockFailedDispenseEvent event) {
-        isTntDispenserBlock(event.getBlock());
+        main.isTntDispenserBlock(event.getBlock());
          Block block = event.getBlock();
         if (block.getType() != Material.DISPENSER) return;
-        Location loc = toBlockLocation(block.getLocation());
-        if (!isTntDispenserBlock(block)) return;
+        Location loc = main.toBlockLocation(block.getLocation());
+        if (!main.isTntDispenserBlock(block)) return;
         plugin.getServer().getRegionScheduler().execute(plugin, loc, () -> {fireTnt(loc);});
     }
 
@@ -95,10 +98,4 @@ public class DispenserListener implements Listener {
         }
         dispenserLoc.getWorld().spawnEntity(spawnLoc, EntityType.TNT);
     }
-
-
-
-
-
-
 }

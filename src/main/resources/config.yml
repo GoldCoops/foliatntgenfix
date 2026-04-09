@@ -7,4 +7,6 @@ second-tier:
 
 
 
-first-tier-delay: 2000
+1-tier-delay: 2000
+
+2-tier-delay: 0

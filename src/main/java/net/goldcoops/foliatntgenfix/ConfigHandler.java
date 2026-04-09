@@ -10,8 +10,12 @@ import java.util.Map;
 public class ConfigHandler {
 
     private final JavaPlugin plugin;
+
+    private final Foliatntgenfix main;
+
     public ConfigHandler(JavaPlugin plugin) {
         this.plugin = plugin;
+        this.main = Foliatntgenfix.getInstance();
     }
 
     public void setMaps(Map<Material, Integer> map, String path) {
@@ -21,7 +25,11 @@ public class ConfigHandler {
             section.set(entry.getKey().name(), entry.getValue());
         }
         plugin.saveConfig();
+    }
 
+    public int getTntCooldown(int level) {
+        String path = level + "-tier-delay";
+        return plugin.getConfig().getInt(path);
     }
 
 

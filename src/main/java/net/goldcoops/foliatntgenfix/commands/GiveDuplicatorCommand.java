@@ -1,5 +1,6 @@
 package net.goldcoops.foliatntgenfix.commands;
 
+import net.goldcoops.foliatntgenfix.Foliatntgenfix;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -8,14 +9,16 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import static net.goldcoops.foliatntgenfix.Foliatntgenfix.createTntDispenserItem;
 
 public class GiveDuplicatorCommand implements CommandExecutor {
 
     private final JavaPlugin plugin;
 
+    private final Foliatntgenfix main;
+
     public GiveDuplicatorCommand(JavaPlugin plugin) {
         this.plugin = plugin;
+        this.main = Foliatntgenfix.getInstance();
     }
 
     @Override
@@ -25,7 +28,7 @@ public class GiveDuplicatorCommand implements CommandExecutor {
 
         if (args.length > 0) {
 
-            ItemStack tntduper = createTntDispenserItem((byte) 1);
+            ItemStack tntduper = main.createTntDispenserItem((byte) 1);
 
             String targetName = args[0];
 

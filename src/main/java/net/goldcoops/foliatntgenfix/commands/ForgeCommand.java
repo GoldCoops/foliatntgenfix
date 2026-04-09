@@ -1,5 +1,6 @@
 package net.goldcoops.foliatntgenfix.commands;
 
+import net.goldcoops.foliatntgenfix.Foliatntgenfix;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -19,15 +20,17 @@ import java.util.Map;
 
 import static net.goldcoops.foliatntgenfix.Foliatntgenfix.REQUIRED_ITEMS1;
 import static net.goldcoops.foliatntgenfix.Foliatntgenfix.REQUIRED_ITEMS2;
-import static net.goldcoops.foliatntgenfix.Foliatntgenfix.createTntDispenserItem;
 
 public class ForgeCommand implements CommandExecutor {
 
 
     private final JavaPlugin plugin;
 
+    private final Foliatntgenfix main;
+
     public ForgeCommand(JavaPlugin plugin) {
         this.plugin = plugin;
+        this.main = Foliatntgenfix.getInstance();
     }
 
 
@@ -62,9 +65,9 @@ public class ForgeCommand implements CommandExecutor {
         }
 
 
-        ItemStack dispenser = createTntDispenserItem((byte) level);
+        ItemStack dispenser = main.createTntDispenserItem((byte) level);
         player.getInventory().addItem(dispenser);
-        player.sendMessage(Component.text("Forged a TNT Dispenser!", NamedTextColor.GREEN));
+        player.sendMessage(Component.text().content("Forged a TNT Dispenser!").color(NamedTextColor.GREEN));
         return true;
 
 
@@ -91,8 +94,8 @@ public class ForgeCommand implements CommandExecutor {
         }
 
         if (missingItems) {
-            player.sendMessage(Component.text(missing_sb.toString().trim(), NamedTextColor.RED));
-            player.sendMessage(Component.text(required_sb.toString().trim(), NamedTextColor.GRAY));
+            player.sendMessage(Component.text().content(missing_sb.toString().trim()).color(NamedTextColor.RED));
+            player.sendMessage(Component.text().content(required_sb.toString().trim()).color(NamedTextColor.GRAY));
             return true;
         }
         return false;
